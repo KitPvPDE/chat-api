@@ -6,7 +6,7 @@
 
     <groupId>net.kitpvp.network</groupId>
     <artifactId>chat-api</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
 
     <inceptionYear>2020</inceptionYear>
     <description>A simple chat API for Spigot and BungeeCord</description>
