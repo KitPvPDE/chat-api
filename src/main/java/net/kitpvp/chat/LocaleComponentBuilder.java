@@ -50,11 +50,7 @@ public class LocaleComponentBuilder {
     }
 
     private void init(MsgFormat format) {
-        this.current = new ComponentBuilder(format.getPrefix()).
-                color(format.getPrefixColor()).
-                bold(true).
-                append(" ", ComponentBuilder.FormatRetention.NONE).
-                color(format.getNormalColor());
+        this.current = format.prefixBuilder();
         this.currentUsed = true;
     }
 
