@@ -38,7 +38,7 @@ public class Chat {
         text = text.replace("{%m}", format.getHighlightColor().toString()).
                 replace("{%n}", format.getNormalColor().toString());
 
-        text = "" + format.formatPrefix() + " " + format.getNormalColor() + text;
+        text = "" + format.formatPrefix() + text;
         try {
             text = new MessageFormat(text).format(args, new StringBuffer(), new FieldPosition(0)).toString();
         } catch(Throwable t) {
