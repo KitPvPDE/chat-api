@@ -24,11 +24,11 @@ public interface Connection {
     boolean supportsLineFeed();
 
     /**
-     * Check the locale of this connection.
+     * Check the language of this connection.
      *
      * @return the {@link Locale} this connection is using
      */
-    Locale getLocale();
+    Locale getLanguage();
 
     default void sendMessage(BaseComponent component) {
         sendMessage(new BaseComponent[]{component});

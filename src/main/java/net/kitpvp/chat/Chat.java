@@ -5,7 +5,6 @@ import net.kitpvp.chat.api.MsgFormat;
 import net.kitpvp.chat.api.player.ChatConnection;
 import net.kitpvp.chat.utils.StringUtils;
 import net.kitpvp.network.translation.LocaleManager;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -106,7 +105,7 @@ public class Chat {
     public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, ChatMessageType messageType, String translationKey, Object... args) {
         Map<Locale, String> translations = new HashMap<>();
         for(Connection connection : connections) {
-            Locale locale = connection.getLocale();
+            Locale locale = connection.getLanguage();
 
             String translatedText = translations.computeIfAbsent(locale, connectionLocale -> format(format, translate(connectionLocale, translationKey, args)));
 
@@ -180,7 +179,7 @@ public class Chat {
     }
 
     private static String translate(Connection connection, String translationKey, Object... args) {
-        Locale locale = connection.getLocale();
+        Locale locale = connection.getLanguage();
         return translate(locale, translationKey, args);
     }
 
