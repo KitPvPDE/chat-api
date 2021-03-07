@@ -37,12 +37,18 @@
         <dependency>
             <groupId>net.kitpvp.network</groupId>
             <artifactId>translation-api</artifactId>
-            <version>${project.version}</version>
+            <version>1.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>16.0.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
