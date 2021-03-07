@@ -67,10 +67,27 @@ public class Chat {
         }
     }
 
+    public static void localeAnnounce(Iterable<? extends Connection> connections, MultiLocaleComponentBuilder builder) {
+        localeAnnounce(connections, ChatMessageType.CHAT, builder);
+    }
+
+    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType, MultiLocaleComponentBuilder builder) {
+        for(Connection connection : connections) {
+            if(connection instanceof ChatConnection) {
+                ChatConnection chatConnection = (ChatConnection) connection;
+                chatConnection.sendMessage(messageType, builder.create(connection.getLocale()));
+            } else {
+                connection.sendMessage(builder.create(connection.getLocale()));
+            }
+        }
+    }
+
+    @Deprecated
     public static void localeAnnounce(Iterable<? extends Connection> connections, LocaleComponentBuilder builder) {
         localeAnnounce(connections, ChatMessageType.CHAT, builder);
     }
 
+    @Deprecated
     public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType, LocaleComponentBuilder builder) {
         BaseComponent[][] text = builder.create();
         for(Connection connection : connections) {
@@ -105,7 +122,7 @@ public class Chat {
     public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, ChatMessageType messageType, String translationKey, Object... args) {
         Map<Locale, String> translations = new HashMap<>();
         for(Connection connection : connections) {
-            Locale locale = connection.getLanguage();
+            Locale locale = connection.getLocale();
 
             String translatedText = translations.computeIfAbsent(locale, connectionLocale -> format(format, translate(connectionLocale, translationKey, args)));
 
@@ -179,7 +196,7 @@ public class Chat {
     }
 
     private static String translate(Connection connection, String translationKey, Object... args) {
-        Locale locale = connection.getLanguage();
+        Locale locale = connection.getLocale();
         return translate(locale, translationKey, args);
     }
 

@@ -25,7 +25,7 @@ public class LocaleComponentBuilder {
     public LocaleComponentBuilder(Connection connection, MsgFormat format) {
         this.init(format);
 
-        this.locale = connection.getLanguage();
+        this.locale = connection.getLocale();
         this.supportsLineFeed = connection.supportsLineFeed();
         this.format = format;
     }
