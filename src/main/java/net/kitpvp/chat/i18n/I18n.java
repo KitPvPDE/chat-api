@@ -3,14 +3,14 @@ package net.kitpvp.chat.i18n;
 import lombok.RequiredArgsConstructor;
 import net.kitpvp.network.translation.LocaleManager;
 import net.kitpvp.network.translation.substitute.Substitution;
-import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.util.Locale;
 
 @RequiredArgsConstructor
 public class I18n implements Substitution<String> {
 
-    public static I18n translate(@Nls String languageKey, Object... args) {
+    public static I18n translate(@PropertyKey(resourceBundle = "") String languageKey, Object... args) {
         return new I18n(languageKey, args);
     }
 

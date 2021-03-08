@@ -8,6 +8,7 @@ import net.kitpvp.network.translation.LocaleManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.text.FieldPosition;
 import java.text.MessageFormat;
@@ -115,11 +116,11 @@ public class Chat {
         }
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, String translationKey, Object... args) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
         localeAnnounce(connections, format, ChatMessageType.CHAT, translationKey, args);
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, ChatMessageType messageType, String translationKey, Object... args) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, ChatMessageType messageType, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
         Map<Locale, String> translations = new HashMap<>();
         for(Connection connection : connections) {
             Locale locale = connection.getLocale();
@@ -161,11 +162,11 @@ public class Chat {
         }
     }
 
-    public static void localeResponse(Connection connection, MsgFormat format, String translationKey, Object... args) {
+    public static void localeResponse(Connection connection, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
         localeResponse(connection, ChatMessageType.CHAT, format, translationKey, args);
     }
 
-    public static void localeResponse(Connection connection, ChatMessageType messageType, MsgFormat format, String translationKey, Object... args) {
+    public static void localeResponse(Connection connection, ChatMessageType messageType, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
         String translatedText = format(format, translate(connection, translationKey, args));
 
         if(connection instanceof ChatConnection) {
@@ -195,12 +196,12 @@ public class Chat {
         return texts;
     }
 
-    private static String translate(Connection connection, String translationKey, Object... args) {
+    private static String translate(Connection connection, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
         Locale locale = connection.getLocale();
         return translate(locale, translationKey, args);
     }
 
-    private static String translate(Locale locale, String translationKey, Object... args) {
-        return LocaleManager.staticTranslate(locale, translationKey, args);
+    private static String translate(Locale locale, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+        return LocaleManager.getInstance().translate(locale, translationKey, args);
     }
 }

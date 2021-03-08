@@ -6,6 +6,7 @@ import net.kitpvp.chat.utils.StringUtils;
 import net.kitpvp.network.translation.LocaleManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +62,11 @@ public class LocaleComponentBuilder {
         return this;
     }
 
-    public LocaleComponentBuilder translate(String languageKey, Object... languageArgs) {
+    public LocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, Object... languageArgs) {
         return this.translate(languageKey, ComponentBuilder.FormatRetention.ALL, languageArgs);
     }
 
-    public LocaleComponentBuilder translate(String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
+    public LocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
         String translation = this.localeManager.translate(this.locale, languageKey, languageArgs);
         StringBuilder builder = new StringBuilder();
         StringUtils.colorize(translation, builder, this.format);

@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.jetbrains.annotations.PropertyKey;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -34,11 +35,11 @@ public class MultiLocaleComponentBuilder {
         return this;
     }
 
-    public final MultiLocaleComponentBuilder translate(String languageKey, Object... languageArgs) {
+    public final MultiLocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, Object... languageArgs) {
         return this.translate(languageKey, ComponentBuilder.FormatRetention.ALL, languageArgs);
     }
 
-    public MultiLocaleComponentBuilder translate(String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
+    public MultiLocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
         this.parts.add(new I18nPart(languageKey, retention, languageArgs));
         return this;
     }
