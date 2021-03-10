@@ -1,24 +1,16 @@
 package net.kitpvp.chat.i18n;
 
-import lombok.RequiredArgsConstructor;
-import net.kitpvp.network.translation.LocaleManager;
-import net.kitpvp.network.translation.substitute.Substitution;
+import net.kitpvp.chat.Chat;
+import net.kitpvp.chat.api.Connection;
+import net.kitpvp.chat.api.MsgFormat;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
-import java.util.Locale;
+public class I18n {
 
-@RequiredArgsConstructor
-public class I18n implements Substitution<String> {
-
-    public static I18n translate(@PropertyKey(resourceBundle = "") String languageKey, Object... args) {
-        return new I18n(languageKey, args);
+    public static void localeResponse(@NotNull Connection connection, @NotNull MsgFormat format,
+                                      @NotNull @PropertyKey(resourceBundle = "") String languageKey, Object... args) {
+        Chat.localeResponse(connection, format, languageKey, args);
     }
 
-    private final String languageKey;
-    private final Object[] args;
-
-    @Override
-    public String replace(Locale locale, LocaleManager localeManager) {
-        return localeManager.translate(locale, this.languageKey, this.args);
-    }
 }

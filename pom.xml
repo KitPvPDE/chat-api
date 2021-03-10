@@ -32,7 +32,7 @@
         <dependency>
             <groupId>io.github.waterfallmc</groupId>
             <artifactId>travertine-chat</artifactId>
-            <version>1.16-R0.4-SNAPSHOT</version>
+            <version>1.16-R0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.kitpvp.network</groupId>
