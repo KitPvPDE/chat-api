@@ -9,6 +9,7 @@
     <version>1.4-SNAPSHOT</version>
 
     <inceptionYear>2020</inceptionYear>
+    <name>Chat-API</name>
     <description>A simple chat API for Spigot and BungeeCord</description>
 
     <organization>
