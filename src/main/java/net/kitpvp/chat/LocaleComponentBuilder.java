@@ -15,7 +15,7 @@ import java.util.Locale;
 public class LocaleComponentBuilder {
 
     private final List<BaseComponent[]> lines = new ArrayList<>();
-    private final LocaleManager localeManager = LocaleManager.getInstance();
+    private final LocaleManager localeManager;
     private final Locale locale;
     private final boolean supportsLineFeed;
     private final MsgFormat format;
@@ -23,17 +23,23 @@ public class LocaleComponentBuilder {
     private ComponentBuilder current;
     private boolean currentUsed;
 
-    public LocaleComponentBuilder(Connection connection, MsgFormat format) {
+    public LocaleComponentBuilder(LocaleManager localeManager, Connection connection, MsgFormat format) {
         this.init(format);
 
+        this.localeManager = localeManager;
         this.locale = connection.getLocale();
         this.supportsLineFeed = connection.supportsLineFeed();
         this.format = format;
     }
 
+    public LocaleComponentBuilder(Connection connection, MsgFormat format) {
+        this(LocaleManager.getInstance(), connection, format);
+    }
+
     public LocaleComponentBuilder(Locale locale, MsgFormat format) {
         this.init(format);
 
+        this.localeManager = LocaleManager.getInstance();
         this.locale = locale;
         this.supportsLineFeed = false;
         this.format = format;
