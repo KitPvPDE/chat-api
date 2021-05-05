@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 public class Chat {
@@ -22,19 +23,23 @@ public class Chat {
     public static final Pattern NEWLINE = Pattern.compile("[\n\r]");
     public static final String ALL_CODES = "mMnNpP";
 
-    public static void commandResponse(Connection connection, MsgFormat format, String text) {
+    public static void commandResponse(Connection connection, MsgFormat format,
+                                       String text) {
         commandResponse(connection, ChatMessageType.CHAT, format, text);
     }
 
-    public static void commandResponse(Connection connection, ChatMessageType messageType, MsgFormat format, String text) {
+    public static void commandResponse(Connection connection, ChatMessageType messageType,
+                                       MsgFormat format, String text) {
         commandResponse(connection, format, messageType, text);
     }
 
-    public static void commandResponse(Connection connection, MsgFormat format, String text, Object... args) {
+    public static void commandResponse(Connection connection, MsgFormat format,
+                                       String text, Object... args) {
         commandResponse(connection, format, ChatMessageType.CHAT, text, args);
     }
 
-    public static void commandResponse(Connection connection, MsgFormat format, ChatMessageType messageType, String text, Object... args) {
+    public static void commandResponse(Connection connection, MsgFormat format,
+                                       ChatMessageType messageType, String text, Object... args) {
         text = text.replace("{%m}", format.getHighlightColor().toString()).
                 replace("{%n}", format.getNormalColor().toString());
 
@@ -59,7 +64,8 @@ public class Chat {
         commandResponse(connection, ChatMessageType.CHAT, builder);
     }
 
-    public static void commandResponse(Connection connection, ChatMessageType messageType, FormatComponentBuilder builder) {
+    public static void commandResponse(Connection connection, ChatMessageType messageType,
+                                       FormatComponentBuilder builder) {
         if(connection instanceof ChatConnection) {
             ChatConnection chatConnection = (ChatConnection) connection;
             chatConnection.sendMessage(messageType, builder.create());
@@ -68,11 +74,13 @@ public class Chat {
         }
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, MultiLocaleComponentBuilder builder) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections,
+                                      MultiLocaleComponentBuilder builder) {
         localeAnnounce(connections, ChatMessageType.CHAT, builder);
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType, MultiLocaleComponentBuilder builder) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections,
+                                      ChatMessageType messageType, MultiLocaleComponentBuilder builder) {
         for(Connection connection : connections) {
             if(connection instanceof ChatConnection) {
                 ChatConnection chatConnection = (ChatConnection) connection;
@@ -89,7 +97,8 @@ public class Chat {
     }
 
     @Deprecated
-    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType, LocaleComponentBuilder builder) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType,
+                                      LocaleComponentBuilder builder) {
         BaseComponent[][] text = builder.create();
         for(Connection connection : connections) {
             if(connection instanceof ChatConnection) {
@@ -105,7 +114,8 @@ public class Chat {
         localeAnnounce(connections, ChatMessageType.CHAT, components);
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType, BaseComponent... components) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, ChatMessageType messageType,
+                                      BaseComponent... components) {
         for(Connection connection : connections) {
             if(connection instanceof ChatConnection) {
                 ChatConnection chatConnection = (ChatConnection) connection;
@@ -116,11 +126,13 @@ public class Chat {
         }
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format,
+                                      String translationKey, Object... args) {
         localeAnnounce(connections, format, ChatMessageType.CHAT, translationKey, args);
     }
 
-    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format, ChatMessageType messageType, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+    public static void localeAnnounce(Iterable<? extends Connection> connections, MsgFormat format,
+                                      ChatMessageType messageType, String translationKey, Object... args) {
         Map<Locale, String> translations = new HashMap<>();
         for(Connection connection : connections) {
             Locale locale = connection.getLocale();
@@ -153,7 +165,8 @@ public class Chat {
         localeResponse(connection, ChatMessageType.CHAT, components);
     }
 
-    public static void localeResponse(Connection connection, ChatMessageType messageType, BaseComponent... components) {
+    public static void localeResponse(Connection connection, ChatMessageType messageType,
+                                      BaseComponent... components) {
         if(connection instanceof ChatConnection) {
             ChatConnection chatConnection = (ChatConnection) connection;
             chatConnection.sendMessage(messageType, components);
@@ -162,11 +175,13 @@ public class Chat {
         }
     }
 
-    public static void localeResponse(Connection connection, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+    public static void localeResponse(Connection connection, MsgFormat format,
+                                      String translationKey, Object... args) {
         localeResponse(connection, ChatMessageType.CHAT, format, translationKey, args);
     }
 
-    public static void localeResponse(Connection connection, ChatMessageType messageType, MsgFormat format, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+    public static void localeResponse(Connection connection, ChatMessageType messageType,
+                                      MsgFormat format, String translationKey, Object... args) {
         String translatedText = format(format, translate(connection, translationKey, args));
 
         if(connection instanceof ChatConnection) {
@@ -196,12 +211,16 @@ public class Chat {
         return texts;
     }
 
-    private static String translate(Connection connection, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
+    private static String translate(Connection connection, String translationKey, Object... args) {
         Locale locale = connection.getLocale();
         return translate(locale, translationKey, args);
     }
 
-    private static String translate(Locale locale, @PropertyKey(resourceBundle = "") String translationKey, Object... args) {
-        return LocaleManager.getInstance().translate(locale, translationKey, args);
+    private static String translate(Locale locale, String translationKey, Object... args) {
+        try {
+            return LocaleManager.getInstance().translate(locale, translationKey, args);
+        } catch (ExecutionException ignored) {
+            return translationKey;
+        }
     }
 }

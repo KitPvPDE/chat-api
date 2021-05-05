@@ -11,6 +11,7 @@ import org.jetbrains.annotations.PropertyKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class LocaleComponentBuilder {
 
@@ -68,12 +69,15 @@ public class LocaleComponentBuilder {
         return this;
     }
 
-    public LocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, Object... languageArgs) {
+    public LocaleComponentBuilder translate(String languageKey, Object... languageArgs) {
         return this.translate(languageKey, ComponentBuilder.FormatRetention.ALL, languageArgs);
     }
 
-    public LocaleComponentBuilder translate(@PropertyKey(resourceBundle = "") String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
-        String translation = this.localeManager.translate(this.locale, languageKey, languageArgs);
+    public LocaleComponentBuilder translate(String languageKey, ComponentBuilder.FormatRetention retention, Object... languageArgs) {
+        String translation = languageKey;
+        try {
+            translation = this.localeManager.translate(this.locale, languageKey, languageArgs);
+        } catch (ExecutionException ignored) { }
         StringBuilder builder = new StringBuilder();
         StringUtils.colorize(translation, builder, this.format);
         String text = builder.toString();
